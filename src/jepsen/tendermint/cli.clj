@@ -6,7 +6,7 @@
 
 (def opts
   "Extra command line opts."
-  [(jc/package-opt "tendermint-url" "https://github.com/tendermint/tendermint/releases/download/v0.34.22/tendermint_0.34.22_linux_amd64.tar.gz")])
+  [(jc/package-opt "tendermint-url" "https://github.com/tendermint/tendermint/archive/refs/tags/v0.34.23.tar.gz")])
 
 
 (defn -main
