@@ -12,6 +12,7 @@
             [jepsen.util :as util :refer [timeout with-retry map-vals]]
             [jepsen.control.util :as cu] 
             [jepsen.os.debian :as debian] 
+            [jepsen.tendermint.call :as cal]
             [jepsen.tendermint.util :refer [base-dir]]))
 
 
@@ -22,13 +23,13 @@
         path (get opts opt-name)]
     (cu/install-archive! path (str base-dir "/" app))))
 
-;; (defn init-tendermint!
-;;   "Initializes tendermint config files"
-;;   [test node]
-;;   (c/su
-;;    (c/cd base-dir
-;;              (jepsen/run-command node ["tendermint" "init"])))
-;;   :initiallized the cofig files)
+(defn init-tendermint!
+   "Initializes tendermint config files"
+   [test node]
+    (let [pat (str base-dir "/tendermint")]
+      (c/cd pat)
+      (cal/croo "./tendermint" ["init" "--home" base-dir])))
+
 
 (defn db
   "Etcd DB for a particular version."
@@ -38,12 +39,12 @@
 
             ;; install the tendermint
             (c/su
-             (install-component! "tendermint"  opts)))
-
+             (install-component! "tendermint"  opts)
+             
             ;;(jepsen/synchronize test 240)
 
             ;;init all nodes path: ~/root/.tendermint/config
-            ;;(init-tendermint! test node)
+            (init-tendermint! test node)))
 
             ;;start the nodes 
             ;;(start-tendermint! test node)
